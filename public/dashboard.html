@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <title>Vicky Chat Application🏡🏚🏡🎆</title>
+</head>
+<body>
+    <div class="container-fluid col-lg-12 c0l-sm-6 shadow shadow-5">
+        <div class="fw-lighter bg-light fs-4 text-center col-lg-12 px-5 col-sm-12 rounded rounded-3 ">
+        <h4 style="font-family: sans-serif;" class="fw-lighter mt-2">Vicky ChatRoom Application🏡🏚🏡🎆</h4>
+        <div class="d-sm-block d-lg-flex text-center">
+            <h6 id="Display2" class="fw-lighter fs-1 text-center" style="font-family: sans-serif;"></h6>
+            <h6 id="disp" ></h6>
+        </div>
+         <hr>
+            <h4 id="display" class="text-start fw-lighter fs-1"></h4>
+            <!-- Sweelalert -->
+    <div class="fw-lighter fs-2 px-3 text-center">
+        <div id="alertMsg"></div>
+    </div>
+    <!-- sweetalert ended -->
+    <!-- input and send message button -->
+
+     <input type="text" placeholder="Enter your Message Here" id="userInput" class="form-control col-lg-6 col-sm-12">
+     <div class="d-sm-block d-lg-flex col-lg-6 col-sm-12 px-5">
+        <button id="msgBtn" class="btn btn-success fw-lighter mt-2" style="font-family: sans-serif;">Send Message</button>   
+        <button id="signOutBtn" class="btn btn-danger flex-end col-lg-6 col-sm-6">Sign out</button>
+     </div>
+    </div>
+    <!-- sign out btn  -->
+</div>
+    </div>
+    <script type="module">
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+import { getAuth, onAuthStateChanged ,signOut, } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
+import { getDatabase,ref,set,onValue} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyCjXbrwl3yma9mhoUPyWzIEdK_1enQWXpY",
+    authDomain: "fir-class-zoom.firebaseapp.com",
+    databaseURL: "https://fir-class-zoom-default-rtdb.firebaseio.com",
+    projectId: "fir-class-zoom",
+    storageBucket: "fir-class-zoom.appspot.com",
+    messagingSenderId: "37334511293",
+    appId: "1:37334511293:web:7e7ef7d16274e18b2d51d4"
+  };
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth();
+const database = getDatabase()
+let todoIndex = 0
+onAuthStateChanged(auth,(user)=>{
+    console.log(user)
+    if(user){
+        Display2.innerHTML = `<h1>Welcome, ${user.displayName}`
+        disp.innerHTML = `<img src='${user.photoURL}' alt="UserDisplayName" height="100px" width="100px" style="border-radius:50%;">`
+    }else{
+        alert("user is not signed in")
+        window.location.href = "index.html"
+    }
+})
+signOutBtn.addEventListener("click",()=>{
+    signOut(auth)
+    .then(()=>{
+        console.log("user iyaf sign out ooo")
+    })
+    .catch((err)=>{
+        console.log(err)
+    })
+})
+        
+msgBtn.addEventListener("click",()=>{
+    let dbRef = ref(database,`Chat Message/${todoIndex}`)
+    let date = new Date()
+    let chat = {
+      message : userInput.value,
+      time : date.toLocaleTimeString(),
+      username : auth.currentUser.displayName
+    }
+    set(dbRef,chat)
+  })
+   let chatRef = ref(database,"Chat Message")
+   onValue(chatRef,(snapshot)=>{
+       display.innerHTML = ""
+       let data = snapshot.val()
+       console.log(data.length)
+       if(data){
+         todoIndex = data.length
+       }else{
+         todoIndex = 0 
+        }
+        data.map((eachItem)=>{
+            display.innerHTML = `
+            <h6>${eachItem.message}<h6>
+                <p>${eachItem.username}<p>
+                    <p>${eachItem.time}<p>
+                        `
+                    })
+                })
+           // userInput.value = ""
+            //showAlert('You just sent a message to the group chat' ,'alert-success')
+            //setTimeout(removeAlert,5000)
+    
+
+   // config showAlert//
+  //   const showAlert = (msg, className)=>{
+    //alertMsg.innerText = msg 
+    //alertMsg.className = `alert ${className}`
+   // }
+
+   // const removeAlert = (msg, className) =>{
+    //alertMsg.innerHTML = ''
+    //alertMsg.innerHTML = ''
+   //}
+
+</script>
+</body>
+</html>
