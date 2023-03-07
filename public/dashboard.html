@@ -95,14 +95,15 @@ msgBtn.addEventListener("click",()=>{
          todoIndex = data.length
        }else{
          todoIndex = 0 
-        }
-        data.map((eachItem)=>{
-            display.innerHTML = `
-            <h6>${eachItem.message}<h6>
-            <p>${eachItem.username}<p>
-            <p>${eachItem.time}<p> `
-                    })
-                })
+       }
+       data.map((eachItem)=>{
+         displayMsg.innerHTML += `
+         <h1>${eachItem.message}</h1>
+         <i>${eachItem.time}</i>
+         <p>${eachItem.username}</p>
+         `
+       })
+     })
            // userInput.value = ""
             //showAlert('You just sent a message to the group chat' ,'alert-success')
             //setTimeout(removeAlert,5000)

@@ -59,18 +59,27 @@
             }
             let userRef = ref(database,`allUsers/${userIndex}`)
             set(userRef,user)
-
-            //Send Email Verifiction
-           // sendEmailVerification(auth.currentUser).then(() => {
-              //console.log("successful");
-           // });
-            window.location.href = "chat.html"
-          })
-          .catch((error)=>{
-            console.log(error)
-          })
-        })
-        let allUser
+              // sendEmailVerification(auth.currentUser).then(() => {
+              //   console.log("successful");
+              // });
+              window.location.href = "chat.html"
+              console.log(response)
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+  
+            let allUsersRef = ref(database,"allUsers")
+            onValue(allUsersRef,(snapshot)=>{
+              let data =snapshot.val()
+              console.log(data)
+              if(data){
+                userIndex = data.length
+              }else{
+                userIndex = 0
+              } 
+            })
+          });
       </script>
 </body>
 </html>
