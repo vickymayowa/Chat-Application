@@ -77,7 +77,7 @@ signOutBtn.addEventListener("click",()=>{
 })
         
 msgBtn.addEventListener("click",()=>{
-    let dbRef = ref(database,`Chat Message/0`)
+    let dbRef = ref(database,`Chat Message/${todoIndex}`)
     let date = new Date()
     let chat = {
       message : userInput.value,
