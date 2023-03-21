@@ -48,14 +48,14 @@
             onValue(allChatsRef,(snapshot)=>{
                 let data = snapshot.val()
                 console.log(data)
+                allUsersDiv.innerHTML = ""
                 data.map((eachUser)=>{
                     allUsersDiv.innerHTML += `
-                    <h1>${eachUser.displayName}</h1>
+                    <h1 id='chatHeader' onclick="startChat('${eachUser.id}')">${eachUser.displayName}</h1>
                     <hr/>
                     `
                 })
             })
-        console.log(allChats)
         console.log(window)
     </script>
 </body>
